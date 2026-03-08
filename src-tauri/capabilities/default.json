@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.tauri.app/capability/2",
+  "identifier": "default",
+  "description": "Default capabilities for the application",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-close",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-start-dragging",
+    "core:window:allow-inner-position",
+    "core:window:allow-inner-size",
+    "core:window:allow-outer-position",
+    "core:window:allow-outer-size",
+    "core:window:allow-is-maximized",
+    "core:window:allow-is-minimized",
+    "shell:allow-open",
+    "dialog:default",
+    "dialog:allow-open",
+    "dialog:allow-save"
+  ]
+}

@@ -1,0 +1,426 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif;
+}
+
+.editor-container {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+
+.editor-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.editor-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.editor-container::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 4px;
+}
+
+/* Preview styles - Typora style */
+#markdown-preview {
+    line-height: 1.8;
+    color: #1f2937;
+}
+
+/* 确保列表样式优先级最高 */
+#markdown-preview ul {
+    list-style-type: disc !important;
+    list-style-position: outside !important;
+    padding-left: 2em !important;
+}
+
+#markdown-preview ol {
+    list-style-type: decimal !important;
+    list-style-position: outside !important;
+    padding-left: 2em !important;
+}
+
+#markdown-preview li {
+    display: list-item !important;
+    list-style-position: outside !important;
+}
+
+#markdown-preview h1 {
+    color: #111827;
+    font-weight: 600;
+    font-size: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.3em;
+}
+
+#markdown-preview h2 {
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.3em;
+}
+
+#markdown-preview h3 {
+    font-weight: 600;
+    font-size: 1.25em;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+#markdown-preview h4 {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+#markdown-preview p {
+    margin-bottom: 1em;
+    color: #374151;
+    line-height: 1.7;
+}
+
+#markdown-preview a {
+    color: #2563eb;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+#markdown-preview a:hover {
+    border-bottom-color: #2563eb;
+}
+
+#markdown-preview code {
+    background: #f3f4f6;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9em;
+    color: #e11d48;
+}
+
+#markdown-preview pre {
+    background: #f3f4f6;
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 1em;
+    border: 1px solid #e5e7eb;
+}
+
+#markdown-preview pre code {
+    background: transparent;
+    padding: 0;
+    color: #374151;
+}
+
+#markdown-preview blockquote {
+    border-left: 4px solid #e5e7eb;
+    padding-left: 1em;
+    margin: 1em 0;
+    color: #6b7280;
+}
+
+#markdown-preview blockquote p {
+    margin-bottom: 0;
+}
+
+/* Dark theme preview styles */
+.dark #markdown-preview {
+    color: #e5e7eb;
+}
+
+/* Code blocks - completely override all styles */
+.dark #markdown-preview pre {
+    background: #1f2937 !important;
+    border: 1px solid #4b5563 !important;
+    border-radius: 6px !important;
+    padding: 1em !important;
+    margin: 1em 0 !important;
+    overflow-x: auto !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    outline: none !important;
+}
+
+.dark #markdown-preview code {
+    background: #374151 !important;
+    color: #e5e7eb !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 3px !important;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+    font-size: 0.9em !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.dark #markdown-preview pre code {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #d1d5db !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* Override highlight.js styles completely */
+.dark #markdown-preview .hljs {
+    background: transparent !important;
+    color: #d1d5db !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+}
+
+.dark #markdown-preview pre code.hljs {
+    background: transparent !important;
+    color: #d1d5db !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* Remove all pseudo-elements that might create effects */
+.dark #markdown-preview pre::before,
+.dark #markdown-preview pre::after,
+.dark #markdown-preview code::before,
+.dark #markdown-preview code::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove selection styling */
+.dark #markdown-preview pre::selection,
+.dark #markdown-preview code::selection {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+.dark #markdown-preview h1 {
+    color: #f3f4f6;
+    border-bottom-color: #4b5563;
+}
+
+.dark #markdown-preview h2 {
+    color: #e5e7eb;
+    border-bottom-color: #4b5563;
+}
+
+.dark #markdown-preview h3 {
+    color: #d1d5db;
+}
+
+.dark #markdown-preview h4 {
+    color: #d1d5db;
+}
+
+.dark #markdown-preview p {
+    color: #d1d5db;
+}
+
+.dark #markdown-preview a {
+    color: #60a5fa;
+}
+
+.dark #markdown-preview a:hover {
+    border-bottom-color: #60a5fa;
+}
+
+.dark #markdown-preview code {
+    background: #374151;
+    color: #f472b6;
+}
+
+.dark #markdown-preview pre {
+    background: #1f2937;
+    border-color: #4b5563;
+}
+
+.dark #markdown-preview pre code {
+    color: #e5e7eb;
+}
+
+.dark #markdown-preview blockquote {
+    border-left-color: #4b5563;
+    color: #9ca3af;
+}
+
+.dark #markdown-preview ul,
+.dark #markdown-preview ol {
+    color: #d1d5db;
+    list-style-position: outside;
+}
+
+.dark #markdown-preview ul {
+    list-style-type: disc;
+}
+
+.dark #markdown-preview ol {
+    list-style-type: decimal;
+}
+
+.dark #markdown-preview li {
+    color: #d1d5db;
+}
+
+.dark #markdown-preview td,
+.dark #markdown-preview th {
+    border-color: #4b5563;
+}
+
+.dark #markdown-preview th {
+    background: #374151;
+    color: #e5e7eb;
+}
+
+.dark #markdown-preview td {
+    color: #d1d5db;
+}
+
+.dark #markdown-preview hr {
+    border-top-color: #4b5563;
+}
+
+.dark #markdown-preview table {
+    border-color: #4b5563;
+}
+
+#markdown-preview ul,
+#markdown-preview ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+    list-style-position: outside;
+}
+
+#markdown-preview ul {
+    list-style-type: disc;
+}
+
+#markdown-preview ol {
+    list-style-type: decimal;
+}
+
+#markdown-preview li {
+    margin-bottom: 0.25em;
+    line-height: 1.7;
+}
+
+#markdown-preview img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+#markdown-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+#markdown-preview th,
+#markdown-preview td {
+    border: 1px solid #e5e7eb;
+    padding: 0.5em 0.75em;
+}
+
+#markdown-preview th {
+    background: #f9fafb;
+    font-weight: 600;
+}
+
+#markdown-preview hr {
+    border: none;
+    border-top: 2px solid #e5e7eb;
+    margin: 2em 0;
+}
+
+/* Chat message styles */
+.chat-message {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.chat-message.user {
+    background: #2563eb;
+    color: white;
+    margin-left: 1rem;
+}
+
+.chat-message.assistant {
+    background: white;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+/* Loading animation */
+.loading-dots span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin: 0 2px;
+    animation: loading-dots 1.4s infinite ease-in-out both;
+}
+
+.loading-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes loading-dots {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* File tree styles */
+.file-item {
+    cursor: pointer;
+    user-select: none;
+}
+
+.file-item:hover {
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.file-item.active {
+    background: rgba(37, 99, 235, 0.1);
+    border-left: 2px solid #2563eb;
+}
+
+/* 分割条样式 */
+#left-resizer,
+#right-resizer {
+    transition: background-color 0.15s ease;
+    position: relative;
+    z-index: 10;
+}
+
+#left-resizer:hover,
+#right-resizer:hover {
+    background-color: #2563eb !important;
+}
+
+#left-resizer:active,
+#right-resizer:active {
+    background-color: #1d4ed8 !important;
+}
+
+/* 分割条在拖动时的样式 */
+#left-resizer.resizing,
+#right-resizer.resizing {
+    background-color: #3b82f6 !important;
+    cursor: col-resize !important;
+}

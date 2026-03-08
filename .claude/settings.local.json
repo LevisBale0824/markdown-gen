@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where:*)",
+      "Bash(magick:*)",
+      "Bash(npm list:*)",
+      "Bash(python:*)",
+      "Bash(ls:*)",
+      "Bash(rustc:*)",
+      "Bash(cargo:*)",
+      "Bash(export:*)",
+      "Bash(npx tauri:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

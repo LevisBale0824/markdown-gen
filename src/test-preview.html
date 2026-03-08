@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Preview Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .test { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Markdown Preview Test</h1>
+    <div id="test1" class="test">Testing marked.js...</div>
+    <div id="test2" class="test">Testing simple parser...</div>
+    <script>
+        // Test 1: marked.js
+        try {
+            if (typeof marked !== 'undefined') {
+                document.getElementById('test1').innerHTML = '✅ marked.js loaded: ' + marked.parse('# Hello');
+            } else {
+                document.getElementById('test1').innerHTML = '❌ marked.js NOT loaded';
+            }
+        } catch (e) {
+            document.getElementById('test1').innerHTML = '❌ Error: ' + e.message;
+        }
+
+        // Test 2: simple parser
+        function simpleParse(md) {
+            return md.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+        }
+        document.getElementById('test2').innerHTML = '✅ Simple parser: ' + simpleParse('# Hello');
+    </script>
+</body>
+</html>
