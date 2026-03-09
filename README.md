@@ -5,47 +5,63 @@
 ## 功能特性
 
 - **Markdown 编辑** - 功能完整的 Markdown 编辑器，支持实时预览
+  - 三种视图模式：编辑、分栏、预览
+  - 语法高亮（highlight.js）
+  - 快捷键支持
 - **AI 助手** - 集成 GLM-4 或 OpenAI 兼容 API 的智能助手
   - 润色文本
   - 扩写内容
   - 总结文章
   - 调整语气
 - **文件浏览器** - 内置文件管理器，轻松管理文档
-- **语法高亮** - 支持 highlight.js 代码块高亮
 - **多语言支持** - 支持中文和英文界面
 - **主题切换** - 支持浅色、深色和自定义主题
-- **快捷键** - 支持 Ctrl+B、Ctrl+I、Ctrl+S 等快捷操作
 
 ## 技术栈
 
-- **前端**: HTML, CSS (Tailwind CSS), 原生 JavaScript
-- **后端**: Rust (Tauri 2.0)
-- **AI 集成**: GLM-4 (智谱 AI) / OpenAI 兼容 API
+| 层级 | 技术 |
+|------|------|
+| **前端** | TypeScript + Tailwind CSS + Vite |
+| **后端** | Rust + Tauri 2.0 |
+| **AI 集成** | GLM-4 (智谱 AI) / OpenAI 兼容 API |
+| **Markdown 解析** | marked.js |
+| **代码高亮** | highlight.js |
 
 ## 项目结构
 
 ```
 markdown-gen/
-├── src/                    # 前端源代码
-│   ├── index.html          # 主页面入口
-│   ├── styles.css          # 自定义样式
-│   └── js/
-│       ├── main.js         # 入口文件
-│       ├── app.js          # 主应用逻辑
-│       ├── editor.js       # Markdown 编辑器功能
-│       ├── ai.js           # AI 助手集成
-│       ├── file-explorer.js # 文件浏览器功能
-│       └── i18n.js         # 国际化支持
-├── src-tauri/              # Tauri/Rust 后端
+├── src/                          # 前端源代码
+│   ├── index.html                # 主页面入口
+│   ├── styles.css                # 自定义样式
+│   └── ts/                       # TypeScript 源码
+│       ├── main.ts               # 应用入口，服务注册和初始化
+│       ├── core/                 # 核心基础设施
+│       │   ├── container.ts      # 依赖注入容器
+│       │   ├── tauri-bridge.ts   # Tauri API 桥接层
+│       │   └── index.ts          # 核心模块导出
+│       ├── modules/              # 业务模块
+│       │   ├── editor/           # Markdown 编辑器模块
+│       │   ├── ai-assistant/     # AI 助手模块
+│       │   ├── file-explorer/    # 文件浏览器模块
+│       │   ├── app/              # 主应用逻辑
+│       │   └── i18n/             # 国际化模块
+│       └── types/                # TypeScript 类型定义
+├── src-tauri/                    # Tauri/Rust 后端
 │   ├── src/
-│   │   ├── main.rs         # 应用入口
-│   │   ├── ai.rs           # AI API 客户端
-│   │   ├── file.rs         # 文件操作
-│   │   ├── config.rs       # 配置管理
-│   │   └── commands.rs     # Tauri 命令处理
-│   ├── Cargo.toml          # Rust 依赖
-│   └── tauri.conf.json     # Tauri 配置
-└── package.json            # Node.js 依赖
+│   │   ├── main.rs               # 应用入口和 Tauri 配置
+│   │   ├── commands.rs           # Tauri 命令处理
+│   │   ├── ai.rs                 # AI API 客户端
+│   │   ├── file.rs               # 文件操作
+│   │   ├── config.rs             # 配置管理
+│   │   └── watcher.rs            # 文件监视器
+│   ├── Cargo.toml                # Rust 依赖配置
+│   ├── tauri.conf.json           # Tauri 应用配置
+│   └── capabilities/             # Tauri 权限配置
+├── dist/                         # Vite 构建输出
+├── package.json                  # Node.js 项目配置
+├── tsconfig.json                 # TypeScript 配置
+└── vite.config.ts                # Vite 构建配置
 ```
 
 ## 环境要求
@@ -93,6 +109,13 @@ npm run tauri build
 | Ctrl+O | 打开文件 |
 | Ctrl+N | 新建文件 |
 | Escape | 关闭弹窗 |
+
+## 架构特点
+
+- **模块化设计** - 前端采用依赖注入容器（DI Container）管理服务，各模块解耦
+- **桥接模式** - 通过 `tauri-bridge.ts` 封装 Tauri API，前端与原生后端通信
+- **前后端分离** - TypeScript 负责所有 UI 和交互逻辑，Rust 负责文件系统、AI API 调用等原生能力
+- **响应式 UI** - 使用 Tailwind CSS，支持深色/浅色主题切换
 
 ## 开发
 
