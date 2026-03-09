@@ -5,7 +5,7 @@
 import type { AppConfig, ThemeType, CustomTheme, AppSettings } from '../../types';
 import { tauriBridge } from '../../core';
 import { DEFAULT_APP_CONFIG, DEFAULT_CUSTOM_THEME } from '../../types';
-import type { Editor } from '../editor';
+import { Editor } from '../editor';
 import type { I18n } from '../i18n';
 import type { FileExplorer } from '../file-explorer';
 
@@ -261,10 +261,11 @@ export class App {
     if (this.currentFile) {
       try {
         await tauriBridge.saveFile(this.currentFile, content);
-        this.updateSaveStatus(true);
+        this.editor.markAsSaved();
+        this.editor.showToast('File saved successfully', 'success');
       } catch (error) {
         console.error('Failed to save file:', error);
-        this.updateSaveStatus(false);
+        this.editor.showToast('Failed to save file', 'error');
       }
     } else {
       // 另存为
@@ -275,11 +276,12 @@ export class App {
           await tauriBridge.saveFile(savePath, content);
           this.currentFile = savePath;
           this.updateFileName(savePath);
-          this.updateSaveStatus(true);
+          this.editor.markAsSaved();
+          this.editor.showToast('File saved successfully', 'success');
         }
       } catch (error) {
         console.error('Failed to save file:', error);
-        this.updateSaveStatus(false);
+        this.editor.showToast('Failed to save file', 'error');
       }
     }
   }
@@ -292,20 +294,6 @@ export class App {
     const el = document.getElementById('current-file');
     if (el) {
       el.textContent = fileName || 'Untitled.md';
-    }
-  }
-
-  /**
-   * 更新保存状态
-   */
-  private updateSaveStatus(saved: boolean): void {
-    const status = document.getElementById('save-status');
-    if (!status) return;
-
-    if (saved) {
-      status.innerHTML = '<span class="material-symbols-outlined text-xs">done_all</span>All changes saved';
-    } else {
-      status.innerHTML = '<span class="material-symbols-outlined text-xs text-red-500">error</span>Save failed';
     }
   }
 

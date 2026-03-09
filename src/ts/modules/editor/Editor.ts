@@ -108,6 +108,9 @@ export class Editor {
   private selectedText: string | null = null;
   private contentChangedCallback: ContentChangedCallback | null = null;
   private saveFileCallback: ContentChangedCallback | null = null;
+  private isSyncingScroll: boolean = false;
+  private hasUnsavedChanges: boolean = false;
+  private savedContent: string = '';
 
   constructor() {
     this.editor = document.getElementById('markdown-editor') as HTMLTextAreaElement;
@@ -161,6 +164,9 @@ export class Editor {
 
     // 设置默认视图模式
     this.setViewMode('split');
+
+    // 设置同步滚动
+    this.setupSyncScroll();
 
     // 初始化默认内容
     this.setContent(`# Welcome to Markdown Studio Pro
@@ -288,12 +294,61 @@ Enjoy writing!
   }
 
   /**
+   * 设置同步滚动
+   */
+  private setupSyncScroll(): void {
+    // 编辑器滚动 -> 同步预览
+    this.editor.addEventListener('scroll', () => {
+      if (this.viewMode !== 'split' || this.isSyncingScroll) return;
+
+      this.isSyncingScroll = true;
+
+      const editorScrollRatio = this.editor.scrollTop / (this.editor.scrollHeight - this.editor.clientHeight);
+      const previewScrollTop = editorScrollRatio * (this.previewContainer.scrollHeight - this.previewContainer.clientHeight);
+
+      this.previewContainer.scrollTop = previewScrollTop;
+
+      // 使用 requestAnimationFrame 确保滚动完成后再解锁
+      requestAnimationFrame(() => {
+        this.isSyncingScroll = false;
+      });
+    });
+
+    // 预览滚动 -> 同步编辑器
+    this.previewContainer.addEventListener('scroll', () => {
+      if (this.viewMode !== 'split' || this.isSyncingScroll) return;
+
+      this.isSyncingScroll = true;
+
+      const previewScrollRatio = this.previewContainer.scrollTop / (this.previewContainer.scrollHeight - this.previewContainer.clientHeight);
+      const editorScrollTop = previewScrollRatio * (this.editor.scrollHeight - this.editor.clientHeight);
+
+      this.editor.scrollTop = editorScrollTop;
+
+      requestAnimationFrame(() => {
+        this.isSyncingScroll = false;
+      });
+    });
+  }
+
+  /**
    * 设置编辑器内容
    */
   setContent(content: string): void {
     this.editor.value = content;
+    this.savedContent = content;
+    this.hasUnsavedChanges = false;
     this.updatePreview();
     this.updateStats();
+    this.updateSaveButtonState();
+
+    // 根据内容决定视图模式
+    // 有内容时默认预览模式，无内容时使用分栏模式方便编辑
+    if (content.trim().length > 0) {
+      this.setViewMode('preview');
+    } else {
+      this.setViewMode('split');
+    }
   }
 
   /**
@@ -448,17 +503,108 @@ Enjoy writing!
    * 通知内容变化
    */
   private notifyContentChanged(): void {
+    const currentContent = this.editor.value;
+    this.hasUnsavedChanges = currentContent !== this.savedContent;
+
+    // 更新状态栏
     const status = document.getElementById('save-status');
     if (status) {
-      status.innerHTML = '<span class="material-symbols-outlined text-xs text-yellow-500">edit</span>Unsaved changes';
+      if (this.hasUnsavedChanges) {
+        status.innerHTML = '<span class="material-symbols-outlined text-xs text-yellow-500">edit</span>Unsaved changes';
+      } else {
+        status.innerHTML = '<span class="material-symbols-outlined text-xs text-green-500">done_all</span>All saved';
+      }
     }
+
+    // 更新保存按钮状态
+    this.updateSaveButtonState();
+
     this.contentChangedCallback?.();
+  }
+
+  /**
+   * 更新保存按钮状态
+   */
+  private updateSaveButtonState(): void {
+    const saveBtn = document.getElementById('btn-save');
+    if (saveBtn) {
+      if (this.hasUnsavedChanges) {
+        saveBtn.removeAttribute('disabled');
+        saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      } else {
+        saveBtn.setAttribute('disabled', 'true');
+        saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    }
+  }
+
+  /**
+   * 标记为已保存
+   */
+  markAsSaved(): void {
+    this.savedContent = this.editor.value;
+    this.hasUnsavedChanges = false;
+    this.updateSaveButtonState();
+
+    const status = document.getElementById('save-status');
+    if (status) {
+      status.innerHTML = '<span class="material-symbols-outlined text-xs text-green-500">done_all</span>All saved';
+    }
+  }
+
+  /**
+   * 显示 Toast 通知
+   */
+  showToast(message: string, type: 'success' | 'error' | 'info' = 'success'): void {
+    // 移除已有的 toast
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+      existingToast.remove();
+    }
+
+    // 创建 toast 元素
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.className = `fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 transform transition-all duration-300 translate-y-2 opacity-0 ${
+      type === 'success' ? 'bg-green-500 text-white' :
+      type === 'error' ? 'bg-red-500 text-white' :
+      'bg-blue-500 text-white'
+    }`;
+
+    const icon = type === 'success' ? 'check_circle' :
+                 type === 'error' ? 'error' : 'info';
+
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-xl">${icon}</span>
+      <span class="text-sm font-medium">${message}</span>
+    `;
+
+    document.body.appendChild(toast);
+
+    // 触发动画
+    requestAnimationFrame(() => {
+      toast.classList.remove('translate-y-2', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+    });
+
+    // 3秒后自动消失
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-2', 'opacity-0');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
   /**
    * 保存文件
    */
   async saveFile(): Promise<void> {
+    // 如果没有未保存的更改，不执行保存
+    if (!this.hasUnsavedChanges) {
+      this.showToast('No changes to save', 'info');
+      return;
+    }
+
     if (this.saveFileCallback) {
       await this.saveFileCallback();
     }
