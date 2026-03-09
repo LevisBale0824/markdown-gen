@@ -11,7 +11,14 @@
       "Bash(export:*)",
       "Bash(npx tauri:*)",
       "Bash(taskkill:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "Bash(npm run:*)",
+      "Bash(tasklist:*)",
+      "Bash(mkdir:*)",
+      "Bash(git config:*)",
+      "Bash(command:*)",
+      "Bash(mcp__spectrai-agent__spectrai_write_file:*)"
     ]
   }
 }

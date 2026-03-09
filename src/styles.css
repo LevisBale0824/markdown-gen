@@ -2,68 +2,101 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* ============================================
+   编辑器区域样式 - 高对比度护眼配色
+   ============================================ */
+
 .editor-container {
-    scrollbar-width: thin;
-    scrollbar-color: #d1d5db transparent;
+    background: #fafbfc;
 }
 
-.editor-container::-webkit-scrollbar {
-    width: 8px;
+.dark .editor-container {
+    background: #1a1d23;
 }
 
-.editor-container::-webkit-scrollbar-track {
+/* 编辑器滚动条 - 隐藏但保持滚动功能 */
+#markdown-editor::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* 编辑器文本区域 - 亮色模式 */
+#markdown-editor {
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #1e293b;
     background: transparent;
+    caret-color: #3b82f6;
+    overflow-y: auto;
+    resize: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 }
 
-.editor-container::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 4px;
+/* 编辑器文本区域 - 暗色模式 */
+.dark #markdown-editor {
+    color: #e2e8f0;
+    background: transparent;
+    caret-color: #60a5fa;
 }
 
-/* Preview styles - Typora style */
+/* ============================================
+   预览区域样式
+   ============================================ */
+
+#preview-container {
+    background: #fafbfc;
+}
+
+.dark #preview-container {
+    background: #1a1d23;
+}
+
+/* 预览区滚动条 - 隐藏但保持滚动功能 */
+#preview-container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+#preview-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* ============================================
+   预览内容样式 - 亮色模式（护眼配色）
+   ============================================ */
+
 #markdown-preview {
     line-height: 1.8;
-    color: #1f2937;
-}
-
-/* 确保列表样式优先级最高 */
-#markdown-preview ul {
-    list-style-type: disc !important;
-    list-style-position: outside !important;
-    padding-left: 2em !important;
-}
-
-#markdown-preview ol {
-    list-style-type: decimal !important;
-    list-style-position: outside !important;
-    padding-left: 2em !important;
-}
-
-#markdown-preview li {
-    display: list-item !important;
-    list-style-position: outside !important;
+    color: #1e293b;
 }
 
 #markdown-preview h1 {
-    color: #111827;
-    font-weight: 600;
+    color: #0f172a;
+    font-weight: 700;
     font-size: 2em;
     margin-top: 1.5em;
     margin-bottom: 0.8em;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 2px solid #cbd5e1;
     padding-bottom: 0.3em;
 }
 
 #markdown-preview h2 {
+    color: #1e293b;
     font-weight: 600;
     font-size: 1.5em;
     margin-top: 1.5em;
     margin-bottom: 0.8em;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #cbd5e1;
     padding-bottom: 0.3em;
 }
 
 #markdown-preview h3 {
+    color: #1e293b;
     font-weight: 600;
     font-size: 1.25em;
     margin-top: 1.2em;
@@ -71,6 +104,7 @@ body {
 }
 
 #markdown-preview h4 {
+    color: #334155;
     font-weight: 600;
     font-size: 1.1em;
     margin-top: 1em;
@@ -79,148 +113,153 @@ body {
 
 #markdown-preview p {
     margin-bottom: 1em;
-    color: #374151;
-    line-height: 1.7;
+    color: #334155;
+    line-height: 1.8;
 }
 
 #markdown-preview a {
     color: #2563eb;
     text-decoration: none;
     border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
 }
 
 #markdown-preview a:hover {
     border-bottom-color: #2563eb;
 }
 
+/* 行内代码 - 亮色模式 */
 #markdown-preview code {
-    background: #f3f4f6;
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    background: #f1f5f9;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.9em;
-    color: #e11d48;
+    color: #be123c;
+    border: 1px solid #e2e8f0;
 }
 
+/* 代码块 - 亮色模式 */
 #markdown-preview pre {
-    background: #f3f4f6;
-    padding: 1em;
-    border-radius: 6px;
+    background: #f8fafc;
+    padding: 1.2em;
+    border-radius: 8px;
     overflow-x: auto;
     margin-bottom: 1em;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #e2e8f0;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 #markdown-preview pre code {
     background: transparent;
     padding: 0;
-    color: #374151;
+    color: #334155;
+    border: none;
 }
 
+/* 引用块 - 亮色模式 */
 #markdown-preview blockquote {
-    border-left: 4px solid #e5e7eb;
-    padding-left: 1em;
+    border-left: 4px solid #3b82f6;
+    padding: 0.5em 1em;
     margin: 1em 0;
-    color: #6b7280;
+    background: #f1f5f9;
+    border-radius: 0 8px 8px 0;
+    color: #475569;
 }
 
 #markdown-preview blockquote p {
     margin-bottom: 0;
+    color: #475569;
 }
 
-/* Dark theme preview styles */
+/* 列表样式 */
+#markdown-preview ul,
+#markdown-preview ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+    list-style-position: outside;
+}
+
+#markdown-preview ul {
+    list-style-type: disc !important;
+}
+
+#markdown-preview ol {
+    list-style-type: decimal !important;
+}
+
+#markdown-preview li {
+    display: list-item !important;
+    list-style-position: outside !important;
+    margin-bottom: 0.3em;
+    line-height: 1.8;
+    color: #334155;
+}
+
+/* 表格样式 - 亮色模式 */
+#markdown-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+#markdown-preview th,
+#markdown-preview td {
+    border: 1px solid #cbd5e1;
+    padding: 0.6em 1em;
+    text-align: left;
+}
+
+#markdown-preview th {
+    background: #f1f5f9;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+#markdown-preview td {
+    color: #334155;
+}
+
+#markdown-preview hr {
+    border: none;
+    border-top: 2px solid #cbd5e1;
+    margin: 2em 0;
+}
+
+#markdown-preview img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   预览内容样式 - 暗色模式（高对比度护眼）
+   ============================================ */
+
 .dark #markdown-preview {
-    color: #e5e7eb;
-}
-
-/* Code blocks - completely override all styles */
-.dark #markdown-preview pre {
-    background: #1f2937 !important;
-    border: 1px solid #4b5563 !important;
-    border-radius: 6px !important;
-    padding: 1em !important;
-    margin: 1em 0 !important;
-    overflow-x: auto !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    outline: none !important;
-}
-
-.dark #markdown-preview code {
-    background: #374151 !important;
-    color: #e5e7eb !important;
-    padding: 0.2em 0.4em !important;
-    border-radius: 3px !important;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
-    font-size: 0.9em !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-}
-
-.dark #markdown-preview pre code {
-    background: transparent !important;
-    padding: 0 !important;
-    color: #d1d5db !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-}
-
-/* Override highlight.js styles completely */
-.dark #markdown-preview .hljs {
-    background: transparent !important;
-    color: #d1d5db !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-}
-
-.dark #markdown-preview pre code.hljs {
-    background: transparent !important;
-    color: #d1d5db !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-}
-
-/* Remove all pseudo-elements that might create effects */
-.dark #markdown-preview pre::before,
-.dark #markdown-preview pre::after,
-.dark #markdown-preview code::before,
-.dark #markdown-preview code::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Remove selection styling */
-.dark #markdown-preview pre::selection,
-.dark #markdown-preview code::selection {
-    background: #3b82f6 !important;
-    color: #ffffff !important;
+    color: #e2e8f0;
 }
 
 .dark #markdown-preview h1 {
-    color: #f3f4f6;
-    border-bottom-color: #4b5563;
+    color: #f8fafc;
+    border-bottom-color: #475569;
 }
 
 .dark #markdown-preview h2 {
-    color: #e5e7eb;
-    border-bottom-color: #4b5563;
+    color: #f1f5f9;
+    border-bottom-color: #475569;
 }
 
 .dark #markdown-preview h3 {
-    color: #d1d5db;
+    color: #e2e8f0;
 }
 
 .dark #markdown-preview h4 {
-    color: #d1d5db;
+    color: #cbd5e1;
 }
 
 .dark #markdown-preview p {
-    color: #d1d5db;
+    color: #cbd5e1;
 }
 
 .dark #markdown-preview a {
@@ -231,114 +270,94 @@ body {
     border-bottom-color: #60a5fa;
 }
 
+/* 行内代码 - 暗色模式 */
 .dark #markdown-preview code {
-    background: #374151;
+    background: #2d3748;
     color: #f472b6;
+    border: 1px solid #4a5568;
 }
 
+/* 代码块 - 暗色模式 */
 .dark #markdown-preview pre {
-    background: #1f2937;
-    border-color: #4b5563;
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    padding: 1.2em !important;
+    margin: 1em 0 !important;
+    overflow-x: auto !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 .dark #markdown-preview pre code {
-    color: #e5e7eb;
+    background: transparent !important;
+    padding: 0 !important;
+    color: #c9d1d9 !important;
+    border: none !important;
 }
 
+/* Override highlight.js styles */
+.dark #markdown-preview .hljs {
+    background: transparent !important;
+    color: #c9d1d9 !important;
+}
+
+.dark #markdown-preview pre code.hljs {
+    background: transparent !important;
+    color: #c9d1d9 !important;
+}
+
+/* 引用块 - 暗色模式 */
 .dark #markdown-preview blockquote {
-    border-left-color: #4b5563;
-    color: #9ca3af;
+    border-left-color: #3b82f6;
+    background: #1e293b;
+    color: #94a3b8;
 }
 
+.dark #markdown-preview blockquote p {
+    color: #94a3b8;
+}
+
+/* 列表 - 暗色模式 */
 .dark #markdown-preview ul,
 .dark #markdown-preview ol {
-    color: #d1d5db;
-    list-style-position: outside;
-}
-
-.dark #markdown-preview ul {
-    list-style-type: disc;
-}
-
-.dark #markdown-preview ol {
-    list-style-type: decimal;
+    color: #cbd5e1;
 }
 
 .dark #markdown-preview li {
-    color: #d1d5db;
+    color: #cbd5e1;
 }
 
-.dark #markdown-preview td,
-.dark #markdown-preview th {
-    border-color: #4b5563;
+/* 表格 - 暗色模式 */
+.dark #markdown-preview table {
+    border-color: #475569;
+}
+
+.dark #markdown-preview th,
+.dark #markdown-preview td {
+    border-color: #475569;
 }
 
 .dark #markdown-preview th {
-    background: #374151;
-    color: #e5e7eb;
+    background: #1e293b;
+    color: #f1f5f9;
 }
 
 .dark #markdown-preview td {
-    color: #d1d5db;
+    color: #cbd5e1;
 }
 
 .dark #markdown-preview hr {
-    border-top-color: #4b5563;
+    border-top-color: #475569;
 }
 
-.dark #markdown-preview table {
-    border-color: #4b5563;
+.dark #markdown-preview img {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-#markdown-preview ul,
-#markdown-preview ol {
-    margin-bottom: 1em;
-    padding-left: 2em;
-    list-style-position: outside;
-}
+/* ============================================
+   聊天消息样式
+   ============================================ */
 
-#markdown-preview ul {
-    list-style-type: disc;
-}
-
-#markdown-preview ol {
-    list-style-type: decimal;
-}
-
-#markdown-preview li {
-    margin-bottom: 0.25em;
-    line-height: 1.7;
-}
-
-#markdown-preview img {
-    max-width: 100%;
-    border-radius: 4px;
-}
-
-#markdown-preview table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1em;
-}
-
-#markdown-preview th,
-#markdown-preview td {
-    border: 1px solid #e5e7eb;
-    padding: 0.5em 0.75em;
-}
-
-#markdown-preview th {
-    background: #f9fafb;
-    font-weight: 600;
-}
-
-#markdown-preview hr {
-    border: none;
-    border-top: 2px solid #e5e7eb;
-    margin: 2em 0;
-}
-
-/* Chat message styles */
 .chat-message {
     padding: 0.75rem;
     border-radius: 0.5rem;
@@ -352,12 +371,21 @@ body {
 }
 
 .chat-message.assistant {
-    background: white;
-    border: 1px solid #e5e7eb;
-    color: #374151;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
 }
 
-/* Loading animation */
+.dark .chat-message.assistant {
+    background: #1e293b;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+/* ============================================
+   加载动画
+   ============================================ */
+
 .loading-dots span {
     display: inline-block;
     width: 6px;
@@ -385,42 +413,117 @@ body {
     }
 }
 
-/* File tree styles */
+/* ============================================
+   文件树样式
+   ============================================ */
+
+.file-item-wrapper {
+    width: 100%;
+}
+
 .file-item {
     cursor: pointer;
     user-select: none;
+    color: #334155;
+    transition: background-color 0.15s ease;
 }
 
 .file-item:hover {
-    background: rgba(37, 99, 235, 0.05);
+    background: rgba(37, 99, 235, 0.08);
 }
 
 .file-item.active {
-    background: rgba(37, 99, 235, 0.1);
+    background: rgba(37, 99, 235, 0.12);
     border-left: 2px solid #2563eb;
 }
 
-/* 分割条样式 */
+.dark .file-item {
+    color: #cbd5e1;
+}
+
+.dark .file-item:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.dark .file-item.active {
+    background: rgba(59, 130, 246, 0.2);
+    border-left-color: #3b82f6;
+}
+
+/* 文件夹折叠动画 */
+.folder-children {
+    transition: max-height 0.2s ease-out;
+    overflow: hidden;
+}
+
+/* 文件图标对齐 */
+.file-item .material-symbols-outlined {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* 折叠箭头旋转 */
+.file-item [data-chevron] {
+    transition: transform 0.15s ease;
+}
+
+/* ============================================
+   分割条样式
+   ============================================ */
+
 #left-resizer,
 #right-resizer {
     transition: background-color 0.15s ease;
     position: relative;
     z-index: 10;
+    background-color: #e2e8f0;
+}
+
+.dark #left-resizer,
+.dark #right-resizer {
+    background-color: #2d3748;
 }
 
 #left-resizer:hover,
 #right-resizer:hover {
-    background-color: #2563eb !important;
+    background-color: #3b82f6 !important;
 }
 
 #left-resizer:active,
 #right-resizer:active {
-    background-color: #1d4ed8 !important;
+    background-color: #2563eb !important;
 }
 
-/* 分割条在拖动时的样式 */
 #left-resizer.resizing,
 #right-resizer.resizing {
     background-color: #3b82f6 !important;
     cursor: col-resize !important;
+}
+
+/* ============================================
+   选中文本样式
+   ============================================ */
+
+::selection {
+    background: #3b82f6;
+    color: white;
+}
+
+.dark ::selection {
+    background: #60a5fa;
+    color: #0f172a;
+}
+
+/* ============================================
+   链接和交互元素
+   ============================================ */
+
+#markdown-preview a:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.dark #markdown-preview a:focus {
+    outline-color: #60a5fa;
 }

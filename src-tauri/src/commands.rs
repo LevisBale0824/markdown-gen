@@ -1,6 +1,7 @@
 use crate::ai::{self};
 use crate::config::{self, AppConfig};
 use crate::file::{self, FileInfo};
+use crate::watcher;
 use tauri::{AppHandle, Manager};
 use tauri_plugin_dialog::DialogExt;
 
@@ -8,6 +9,23 @@ use tauri_plugin_dialog::DialogExt;
 struct CurrentFile {
     path: String,
     content: String,
+}
+
+/// 获取应用安装目录
+#[tauri::command]
+pub async fn get_app_dir(_app: AppHandle) -> Result<String, String> {
+    let exe_dir = std::env::current_exe()
+        .map_err(|e| e.to_string())?
+        .parent()
+        .ok_or("Cannot get parent directory")?
+        .to_path_buf();
+    Ok(exe_dir.to_string_lossy().to_string())
+}
+
+/// 启动文件监视
+#[tauri::command]
+pub async fn start_file_watcher(app: AppHandle, path: String) -> Result<(), String> {
+    watcher::start_watcher(app, path)
 }
 
 // File operations
@@ -59,6 +77,14 @@ pub async fn save_file_dialog(app: AppHandle, default_name: Option<String>) -> R
     builder = builder.add_filter("Markdown Files", &["md", "txt", "markdown"]);
 
     match builder.blocking_save_file() {
+        Some(path) => Ok(Some(path.to_string())),
+        None => Ok(None),
+    }
+}
+
+#[tauri::command]
+pub async fn open_folder_dialog(app: AppHandle) -> Result<Option<String>, String> {
+    match app.dialog().file().blocking_pick_folder() {
         Some(path) => Ok(Some(path.to_string())),
         None => Ok(None),
     }

@@ -5,6 +5,7 @@ mod commands;
 mod ai;
 mod file;
 mod config;
+mod watcher;
 
 use commands::*;
 use tauri::Manager;
@@ -16,16 +17,32 @@ fn main() {
         .setup(|app| {
             // Initialize default config if not exists
             config::init_config(app.path().app_config_dir().ok());
+
+            // Create notes directory in app installation folder
+            if let Ok(exe_path) = std::env::current_exe() {
+                if let Some(app_dir) = exe_path.parent() {
+                    let notes_dir = app_dir.join("notes");
+                    if !notes_dir.exists() {
+                        let _ = std::fs::create_dir_all(&notes_dir);
+                    }
+                }
+            }
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            // App operations
+            get_app_dir,
+            start_file_watcher,
             // File operations
             open_file,
             save_file,
             read_directory,
+            open_folder,
             create_file,
             delete_file,
             save_file_dialog,
+            open_folder_dialog,
             // AI operations
             ai_chat,
             ai_suggest,
