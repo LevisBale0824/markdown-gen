@@ -154,10 +154,8 @@ export class Editor {
     this.editor.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
-        const start = this.editor.selectionStart;
-        const end = this.editor.selectionEnd;
-        this.editor.value = this.editor.value.substring(0, start) + '  ' + this.editor.value.substring(end);
-        this.editor.selectionStart = this.editor.selectionEnd = start + 2;
+        // 使用 execCommand 插入文本，保留撤销历史
+        document.execCommand('insertText', false, '  ');
         this.schedulePreviewUpdate();
       }
     });
@@ -214,16 +212,16 @@ Enjoy writing!
     // 重置所有按钮样式
     [btnEdit, btnSplit, btnPreview].forEach(btn => {
       if (btn) {
-        btn.classList.remove('bg-white', 'shadow', 'text-slate-700');
-        btn.classList.add('text-slate-500', 'hover:text-slate-700');
+        btn.classList.remove('bg-white', 'shadow', 'text-slate-700', 'dark:bg-slate-600', 'dark:text-slate-200');
+        btn.classList.add('text-slate-500', 'hover:text-slate-700', 'dark:text-slate-400', 'dark:hover:text-slate-200');
       }
     });
 
     // 激活当前按钮
     const activeBtn = mode === 'edit' ? btnEdit : mode === 'split' ? btnSplit : btnPreview;
     if (activeBtn) {
-      activeBtn.classList.remove('text-slate-500', 'hover:text-slate-700');
-      activeBtn.classList.add('bg-white', 'shadow', 'text-slate-700');
+      activeBtn.classList.remove('text-slate-500', 'hover:text-slate-700', 'dark:text-slate-400', 'dark:hover:text-slate-200');
+      activeBtn.classList.add('bg-white', 'shadow', 'text-slate-700', 'dark:bg-slate-600', 'dark:text-slate-200');
     }
 
     // 更新视图
@@ -443,10 +441,19 @@ Enjoy writing!
         break;
     }
 
-    this.editor.value = text.substring(0, start) + replacement + text.substring(end);
+    // 使用 execCommand 插入文本，保留撤销历史
     this.editor.focus();
 
-    // 设置光标位置
+    // 如果有选中文本，先删除它
+    if (start !== end) {
+      this.editor.setSelectionRange(start, end);
+      document.execCommand('delete', false);
+    }
+
+    // 插入替换文本
+    document.execCommand('insertText', false, replacement);
+
+    // 设置光标位置（在格式化文本内部）
     const newCursorPos = start + cursorOffset;
     this.editor.setSelectionRange(newCursorPos, newCursorPos);
 
@@ -629,11 +636,18 @@ Enjoy writing!
   replaceSelectedText(replacement: string): void {
     const start = this.editor.selectionStart;
     const end = this.editor.selectionEnd;
-    const text = this.editor.value;
 
-    this.editor.value = text.substring(0, start) + replacement + text.substring(end);
+    // 使用 execCommand 插入文本，保留撤销历史
     this.editor.focus();
-    this.editor.setSelectionRange(start + replacement.length, start + replacement.length);
+
+    // 如果有选中文本，先删除它
+    if (start !== end) {
+      this.editor.setSelectionRange(start, end);
+      document.execCommand('delete', false);
+    }
+
+    // 插入替换文本
+    document.execCommand('insertText', false, replacement);
 
     this.updatePreview();
     this.notifyContentChanged();
